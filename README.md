@@ -13,9 +13,11 @@ class Artwork < ApplicationRecord
 end
 ```
 
-If using the [resource-api](https://github.com/performant-software/resource-api) gem, it is a good idea to `preload` any references in your controller that will be serialized for optimal performance.
+If using the [resource-api](https://github.com/performant-software/resource-api) gem, it is a good idea to `preload` any references in your controller that will be serialized for optimal performance. Also include the `Queryable` concern for easy searching and sorting.
 ```ruby
 class Api::ArtworksController < Api::BaseController
+  include ControlledVocabulary::Queryable
+  
   preloads location: :reference_code
   preloads awards: :reference_code
 end

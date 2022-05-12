@@ -28,16 +28,31 @@ module ControlledVocabulary
         @references[key] = options
       end
 
-      def with_reference(key, value)
+      def search_referrable(key, search)
         where(
-          Reference
-            .joins(:reference_code)
-            .where(Reference.arel_table[:referrable_id].eq(self.arel_table[:id]))
-            .where(referrable_type: self.to_s, key: key)
-            .where(controlled_vocabulary_reference_codes: { name: value })
+          references_query(key)
+            .where("#{ReferenceCode.table_name}.name ILIKE ?", "%#{search}%")
             .arel
             .exists
         )
+      end
+
+      def with_reference(key, value)
+        where(
+          references_query(key)
+            .where(ReferenceCode.table_name => { name: value })
+            .arel
+            .exists
+        )
+      end
+
+      private
+
+      def references_query(key)
+        Reference
+          .joins(:reference_code)
+          .where(Reference.arel_table[:referrable_id].eq(self.arel_table[:id]))
+          .where(referrable_type: self.to_s, key: key)
       end
     end
 
