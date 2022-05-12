@@ -26,7 +26,7 @@ module ControlledVocabulary
 
       def extract_has_one(serialized, item, attribute)
         reference = item.send(attribute)
-        serialized[attribute] = reference.reference_code&.name
+        serialized[attribute] = reference&.reference_code&.name
       end
     end
   end

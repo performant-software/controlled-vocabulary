@@ -3,6 +3,16 @@ module ControlledVocabulary
     extend ActiveSupport::Concern
 
     class_methods do
+      # Returns true if the passed attribute allows multiple values
+      def allow_multiple?(attribute)
+        ((@references || {})[attribute] || {})[:multiple] == true
+      end
+
+      # Returns true if the passed attribute is referrable
+      def is_referrable?(attribute)
+        (@references || {}).keys.include?(attribute)
+      end
+
       def references(key, options = {})
         # Setup the has_many or has_one relationship
         relationship = options[:multiple] == true ? :has_many : :has_one
@@ -16,16 +26,6 @@ module ControlledVocabulary
 
         @references ||= {}
         @references[key] = options
-      end
-
-      # Returns true if the passed attribute is referrable
-      def is_referrable?(attribute)
-        (@references || {}).keys.include?(attribute)
-      end
-
-      # Returns true if the passed attribute allows multiple values
-      def allow_multiple?(attribute)
-        ((@references || {})[attribute] || {})[:multiple] == true
       end
     end
 
