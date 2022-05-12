@@ -27,6 +27,18 @@ module ControlledVocabulary
         @references ||= {}
         @references[key] = options
       end
+
+      def with_reference(key, value)
+        where(
+          Reference
+            .joins(:reference_code)
+            .where(Reference.arel_table[:referrable_id].eq(self.arel_table[:id]))
+            .where(referrable_type: self.to_s, key: key)
+            .where(controlled_vocabulary_reference_codes: { name: value })
+            .arel
+            .exists
+        )
+      end
     end
 
     included do
@@ -35,18 +47,6 @@ module ControlledVocabulary
 
       # Callbacks
       before_save :validate_references
-
-      def self.with_reference(reference_key, value)
-        self.where(
-          Reference
-            .joins(:reference_code)
-            .where(Reference.arel_table[:referrable_id].eq(self.arel_table[:id]))
-            .where(referrable_type: self.to_s, key: reference_key)
-            .where(reference_codes: { name: value })
-            .arel
-            .exists
-        )
-      end
 
       private
 
