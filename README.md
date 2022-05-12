@@ -13,6 +13,24 @@ class Artwork < ApplicationRecord
 end
 ```
 
+If using the [resource-api](https://github.com/performant-software/resource-api) gem, it is a good idea to `preload` any references in your controller that will be serialized for optimal performance.
+```ruby
+class Api::ArtworksController < Api::BaseController
+  preloads location: :reference_code
+  preloads awards: :reference_code
+end
+```
+
+Include the `ControlledVocabulary::ReferrableSerializer` in your serializer to automatically include your reference values.
+```ruby
+class ArtworksSerializer < BaseSerializer
+  include ControlledVocabulary::ReferrableSerializer
+  
+  index_attributes :id, :name, :location
+  show_attribtues :id, :name, :location, :awards
+end
+```
+
 `POST http://localhost:3001/artworks`
 
 ```json
