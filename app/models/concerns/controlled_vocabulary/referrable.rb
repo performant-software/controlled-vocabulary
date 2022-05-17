@@ -15,14 +15,13 @@ module ControlledVocabulary
 
       def references(key, options = {})
         # Setup the has_many or has_one relationship
-        relationship = options[:multiple] == true ? :has_many : :has_one
-        self.send(relationship, key.to_sym, -> { where(key: key) }, as: :referrable, dependent: :destroy, class_name: 'ControlledVocabulary::Reference')
+        self.send(:has_many, key.to_sym, -> { where(key: key) }, as: :referrable, dependent: :destroy, class_name: 'ControlledVocabulary::Reference')
 
         # Nested attributes
         self.send(:accepts_nested_attributes_for, key.to_sym, allow_destroy: true)
 
         # Resourceable parameters
-        self.send(:allow_params, "#{key}_attributes".to_sym => [:id, :reference_code_id, :key, :_destroy])
+        self.send(:allow_params, "#{key}_attributes".to_sym => [:id, :reference_code_id, :_destroy])
 
         @references ||= {}
         @references[key] = options
