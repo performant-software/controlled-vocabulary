@@ -38,16 +38,49 @@ end
 ```json
 {
   "artwork": {
-    "references": [{
-      "reference_code_id": 1,
-      "key": "location"
-    }, {
-      "reference_code_id": 56,
-      "key": "awards"
-    }, {
-      "reference_code_id": 4,
-      "key": "awards"
-    }]
+    "location": [
+      {
+        "reference_code_id": 1
+      }
+    ],
+    "awards": [
+      {
+        "reference_code_id": 56
+      },
+      {
+        "reference_code_id": 4
+      }
+    ]
+  }
+}
+```
+
+`GET http://localhost:3001/artworks/1`
+
+```json
+{
+  "artwork": {
+    "awards": [
+      {
+        "id": 1,
+        "key": "awards",
+        "reference_code_id": 56
+      },
+      {
+        "id": 2,
+        "key": "awards",
+        "reference_code_id": 4
+      }
+    ],
+    "awards_view": "Award A, Award B",
+    "location": [
+      {
+        "id": 3,
+        "key": "location",
+        "reference_code_id": 1
+      }
+    ],
+    "location_view": "Boston, MA"
   }
 }
 ```
