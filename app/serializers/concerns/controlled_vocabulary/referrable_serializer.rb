@@ -7,26 +7,16 @@ module ControlledVocabulary
         super unless item.class.is_referrable?(attribute)
         return unless item.class.is_referrable?(attribute)
 
-        if item.class.allow_multiple?(attribute)
-          extract_has_many serialized, item, attribute
-        else
-          extract_has_one serialized, item, attribute
-        end
-      end
+        attribute_view = "#{attribute}_view"
+        references_serializer = ReferencesSerializer.new
 
-      private
-
-      def extract_has_many(serialized, item, attribute)
         serialized[attribute] = []
+        serialized[attribute_view] = []
 
         item.send(attribute)&.each do |reference|
-          serialized[attribute] << reference.reference_code&.name
+          serialized[attribute] << references_serializer.render_index(reference)
+          serialized[attribute_view] << reference.reference_code&.name
         end
-      end
-
-      def extract_has_one(serialized, item, attribute)
-        reference = item.send(attribute)
-        serialized[attribute] = reference&.reference_code&.name
       end
     end
   end
