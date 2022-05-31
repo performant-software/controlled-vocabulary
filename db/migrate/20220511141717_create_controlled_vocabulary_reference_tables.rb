@@ -1,4 +1,4 @@
-class CreateControlledVocabularyReferenceTables < ActiveRecord::Migration[7.0]
+class CreateControlledVocabularyReferenceTables < ActiveRecord::Migration[6.0]
   def up
     create_table :controlled_vocabulary_reference_tables do |t|
       t.string :name
