@@ -4,6 +4,12 @@ module ControlledVocabulary
       super *attrs.map{ |attr| attr.is_a?(Symbol) ? "#{table_name}.#{attr}" : attr }
     end
 
+    def current_user
+      return super if defined?(super)
+
+      nil
+    end
+
     def item_class
       "ControlledVocabulary::#{controller_name.singularize.classify}".constantize
     end
