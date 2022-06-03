@@ -1,4 +1,4 @@
-class CreateControlledVocabularyReferences < ActiveRecord::Migration[7.0]
+class CreateControlledVocabularyReferences < ActiveRecord::Migration[6.0]
   def up
     create_table :controlled_vocabulary_references do |t|
       t.references :reference_code, null: false, index: { name: 'index_references_on_reference_code_id' }
