@@ -89,7 +89,7 @@ end
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'controlled_vocabulary', git: 'https://github.com/performant-software/controlled_vocabulary.git', tag: 'v0.1.0'
+gem 'controlled_vocabulary', git: 'https://github.com/performant-software/controlled_vocabulary.git', tag: 'v0.1.1'
 ```
 
 And then execute:
