@@ -8,5 +8,8 @@ module ControlledVocabulary
 
     # Resourceable parameters
     allow_params :name, :key, reference_codes_attributes: [:id, :name, :_destroy]
+
+    # Validations
+    validates :key, uniqueness: true
   end
 end
